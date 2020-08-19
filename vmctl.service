@@ -1,0 +1,23 @@
+[Unit]
+Description=Victoria Metrics command line tool
+After=network.target
+
+[Service]
+Type=simple
+User=victoriametrics
+Group=victoriametrics
+StartLimitBurst=5
+StartLimitInterval=0
+Restart=on-failure
+RestartSec=1
+#EnvironmentFile=-/etc/default/vmctl.conf
+ExecStart=/usr/bin/vmctl $ARGS
+ExecStop=/bin/kill -s SIGTERM $MAINPID
+ExecReload=/bin/kill -HUP $MAINPID
+# https://github.com/prometheus/prometheus/issues/3446
+LimitNOFILE=1048576
+LimitNPROC=1048576
+LimitCORE=infinity
+
+[Install]
+WantedBy=multi-user.target
