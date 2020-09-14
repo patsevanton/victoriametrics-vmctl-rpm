@@ -1,6 +1,6 @@
 Name:    vmctl
 Version: 0.1.2
-Release: 2
+Release: 3
 Summary: Victoria Metrics command line tool
 
 Group:   Development Tools
@@ -26,7 +26,7 @@ ls
 %{__install} -m 0755 -d %{buildroot}%{_bindir}
 %{__install} -m 0755 -d %{buildroot}/etc/default/
 cp %{SOURCE1} %{buildroot}/etc/default/
-cp vmctl %{buildroot}%{_bindir}/vmctl
+cp vmctl-linux-amd64 %{buildroot}%{_bindir}/vmctl
 %{__install} -m 0755 -d %{buildroot}/var/lib/vmctl
 %if %{use_systemd}
 %{__mkdir} -p %{buildroot}%{_unitdir}
