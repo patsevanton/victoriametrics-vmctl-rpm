@@ -1,6 +1,6 @@
 Name:    vmctl
 Version: 0.1.2
-Release: 3
+Release: 4
 Summary: Victoria Metrics command line tool
 
 Group:   Development Tools
@@ -28,36 +28,13 @@ ls
 cp %{SOURCE1} %{buildroot}/etc/default/
 cp vmctl-linux-amd64 %{buildroot}%{_bindir}/vmctl
 %{__install} -m 0755 -d %{buildroot}/var/lib/vmctl
-%if %{use_systemd}
-%{__mkdir} -p %{buildroot}%{_unitdir}
-%{__install} -m644 %{SOURCE0} \
-    %{buildroot}%{_unitdir}/%{name}.service
-%endif
 
 %pre
 /usr/bin/getent group victoriametrics > /dev/null || /usr/sbin/groupadd -r victoriametrics
 /usr/bin/getent passwd victoriametrics > /dev/null || /usr/sbin/useradd -r -d /var/lib/victoria-metrics-data -s /bin/bash -g victoriametrics victoriametrics
 %{__mkdir} /var/lib/victoria-metrics-data
 
-%post
-%if %use_systemd
-/usr/bin/systemctl daemon-reload
-%endif
-
-%preun
-%if %use_systemd
-/usr/bin/systemctl stop %{name}
-%endif
-
-%postun
-%if %use_systemd
-/usr/bin/systemctl daemon-reload
-%endif
-
 %files
 /etc/default/vmctl.conf
 %{_bindir}/vmctl
 %dir %attr(0775, victoriametrics, victoriametrics) /var/lib/vmctl
-%if %{use_systemd}
-%{_unitdir}/%{name}.service
-%endif
